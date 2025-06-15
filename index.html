@@ -3,59 +3,46 @@
 <head>
   <title>Live Cricket Score</title>
   <style>
-    body { font-family: Arial; padding: 20px; background: #f9f9f9; }
-    h1 { text-align: center; }
-    #score { font-size: 18px; margin-top: 20px; text-align: center; }
-    #debug { margin-top: 20px; font-size: 12px; color: gray; text-align: center; }
+    body { font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f4; text-align: center; }
+    h1 { color: #333; }
+    #score {
+      font-size: 18px;
+      margin-top: 20px;
+      padding: 15px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      white-space: pre-wrap;
+    }
   </style>
 </head>
 <body>
   <h1>Live Cricket Score</h1>
   <div id="score">Loading...</div>
-  <div id="debug">Debug info will appear here...</div>
 
   <script>
     async function fetchScore() {
       const scoreEl = document.getElementById("score");
-      const debugEl = document.getElementById("debug");
-      const proxyUrl = 'https://api.allorigins.win/raw?url=https://api.cricketdata.org/v1/match/live';
-
       scoreEl.innerText = "Loading...";
-      debugEl.innerText = `Fetching: ${proxyUrl}`;
 
       try {
-        const resp = await fetch(proxyUrl, {
-          headers: {
-            'apikey': '9d3d3d6e-df26-4054-97e8-a1e6346e7496'
-          }
-        });
+        const resp = await fetch("https://cricbuzz-live.vercel.app/v1/matches/live?type=international");
+        const json = await resp.json();
 
-        if (!resp.ok) {
-          scoreEl.innerText = `API Error: ${resp.status}`;
-          return;
-        }
-
-        const data = await resp.json();
-        console.log(data);
-        debugEl.innerText += `\nData status: ${data.status}`;
-
-        if (data.status === "success" && data.data.length > 0) {
-          const m = data.data[0];
-          scoreEl.innerText = `${m.team1.name} vs ${m.team2.name}: ${m.score}`;
+        if (json.data?.matches?.length > 0) {
+          const m = json.data.matches[0];
+          scoreEl.innerText = `${m.title}\n${m.teams[0].team} ${m.teams[0].run}\n${m.teams[1].team} ${m.teams[1].run}`;
         } else {
-          scoreEl.innerText = "No live match found.";
+          scoreEl.innerText = "Koi live match nahi hai abhi.";
         }
-
       } catch (err) {
-        scoreEl.innerText = "Score fetch nahi ho paaya.";
-        debugEl.innerText += `\nCatch Error: ${err.message}`;
         console.error(err);
+        scoreEl.innerText = "Error fetching score.";
       }
     }
 
     fetchScore();
-    setInterval(fetchScore, 60000);
+    setInterval(fetchScore, 60000); // refresh every 1 minute
   </script>
 </body>
 </html>
-
