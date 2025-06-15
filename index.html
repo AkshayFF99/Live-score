@@ -6,7 +6,7 @@
     body { font-family: Arial; padding: 20px; background: #f9f9f9; }
     h1 { text-align: center; }
     #score { font-size: 18px; margin-top: 20px; text-align: center; }
-    #debug { margin-top: 20px; font-size: 12px; color: gray; }
+    #debug { margin-top: 20px; font-size: 12px; color: gray; text-align: center; }
   </style>
 </head>
 <body>
@@ -18,7 +18,7 @@
     async function fetchScore() {
       const scoreEl = document.getElementById("score");
       const debugEl = document.getElementById("debug");
-      const proxyUrl = 'https://corsproxy.io/?url=https://api.cricketdata.org/v1/match/live';
+      const proxyUrl = 'https://api.allorigins.win/raw?url=https://api.cricketdata.org/v1/match/live';
 
       scoreEl.innerText = "Loading...";
       debugEl.innerText = `Fetching: ${proxyUrl}`;
@@ -30,15 +30,14 @@
           }
         });
 
-        debugEl.innerText += `\nStatus: ${resp.status}`;
         if (!resp.ok) {
           scoreEl.innerText = `API Error: ${resp.status}`;
           return;
         }
 
         const data = await resp.json();
-        debugEl.innerText += `\nData keys: ${Object.keys(data).join(", ")}`;
-        console.log("Data:", data);
+        console.log(data);
+        debugEl.innerText += `\nData status: ${data.status}`;
 
         if (data.status === "success" && data.data.length > 0) {
           const m = data.data[0];
@@ -48,7 +47,7 @@
         }
 
       } catch (err) {
-        scoreEl.innerText = "Error fetching score.";
+        scoreEl.innerText = "Score fetch nahi ho paaya.";
         debugEl.innerText += `\nCatch Error: ${err.message}`;
         console.error(err);
       }
@@ -59,3 +58,4 @@
   </script>
 </body>
 </html>
+
