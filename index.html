@@ -41,3 +41,42 @@
   </script>
 </body>
 </html>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Live Cricket Score</title>
+</head>
+<body>
+  <h1>Live Cricket Score</h1>
+  <div id="score">Loading...</div>
+
+  <script>
+    async function fetchScore() {
+      try {
+        const response = await fetch('https://api.cricketdata.org/v1/match/live', {
+          headers: {
+            'apikey': 9d3d3d6e-df26-4054-97e8-a1e6346e7496
+          }
+        });
+
+        const data = await response.json();
+        // Check what is returned and show the data you want
+        const scoreElement = document.getElementById("score");
+
+        if (data.status === "success") {
+          const match = data.data[0]; // first live match
+          scoreElement.innerText = `${match.team1.name} vs ${match.team2.name}: ${match.score}`;
+        } else {
+          scoreElement.innerText = "No live match data available.";
+        }
+
+      } catch (error) {
+        document.getElementById("score").innerText = "Error fetching score.";
+      }
+    }
+
+    fetchScore();
+    setInterval(fetchScore, 60000); // refresh every 60 seconds
+  </script>
+</body>
+</html>
