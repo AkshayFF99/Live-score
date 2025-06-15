@@ -1,0 +1,43 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Live Cricket & Football Score</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      padding: 20px;
+    }
+    h1 {
+      color: #222;
+    }
+    .score-box {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Live Scores</h1>
+
+  <div class="score-box">
+    <h2>Cricket Score</h2>
+    <div id="cricket-score">Loading cricket score...</div>
+  </div>
+
+  <div class="score-box">
+    <h2>Football Score</h2>
+    <div id="football-score">Loading football score...</div>
+  </div>
+
+  <script>
+    // Example placeholder text, replace with real API data when ready
+    document.getElementById("cricket-score").innerText = "India vs Australia - 145/3 in 20.0 overs";
+    document.getElementById("football-score").innerText = "Barcelona 2 - 1 Real Madrid (78 min)";
+  </script>
+</body>
+</html>
