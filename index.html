@@ -3,8 +3,15 @@
 <head>
   <title>Live Cricket Score</title>
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f4; text-align: center; }
-    h1 { color: #333; }
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f4f4f4;
+      text-align: center;
+    }
+    h1 {
+      color: #333;
+    }
     #score {
       font-size: 18px;
       margin-top: 20px;
@@ -26,15 +33,10 @@
       scoreEl.innerText = "Loading...";
 
       try {
-        const resp = await fetch("https://cricbuzz-live.vercel.app/v1/matches/live?type=international");
-        const json = await resp.json();
+        const resp = await fetch("https://your-username.vercel.app/api/score"); // ⬅️ Yeh replace karunga mai
+        const data = await resp.json();
 
-        if (json.data?.matches?.length > 0) {
-          const m = json.data.matches[0];
-          scoreEl.innerText = `${m.title}\n${m.teams[0].team} ${m.teams[0].run}\n${m.teams[1].team} ${m.teams[1].run}`;
-        } else {
-          scoreEl.innerText = "Koi live match nahi hai abhi.";
-        }
+        scoreEl.innerText = `${data.title}\n${data.team1}: ${data.score1}\n${data.team2}: ${data.score2}`;
       } catch (err) {
         console.error(err);
         scoreEl.innerText = "Error fetching score.";
@@ -42,7 +44,7 @@
     }
 
     fetchScore();
-    setInterval(fetchScore, 60000); // refresh every 1 minute
+    setInterval(fetchScore, 60000); // Har 60 sec pe refresh
   </script>
 </body>
 </html>
